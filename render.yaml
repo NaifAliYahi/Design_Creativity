@@ -1,0 +1,14 @@
+﻿# نشر على Render.com — رابط عام للتصميم بدون تسجيل
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: mahfazat-jeeb-design
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: APP_MODE=production NODE_ENV=production node server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_MODE
+        value: production

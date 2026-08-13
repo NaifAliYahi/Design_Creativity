@@ -1,0 +1,740 @@
+﻿/* مصمم بطاقات — نفس ألوان وخطوط NetCard Builder simple */
+.netcard-app {
+  --nc-teal: #0f766e;
+  --nc-teal-dark: #115e59;
+  --nc-teal-light: #0d9488;
+  --nc-bg: #f0fdfa;
+}
+
+.netcard-shell {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.netcard-header {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 3px solid var(--nc-teal);
+  background: var(--nc-bg);
+}
+
+.netcard-header h2 {
+  color: var(--nc-teal);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.netcard-tagline {
+  color: var(--nc-teal-light);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.netcard-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.netcard-tab {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  color: #64748b;
+  border-bottom: 3px solid transparent;
+}
+
+.netcard-tab.active {
+  color: var(--nc-teal);
+  border-bottom-color: var(--nc-teal);
+  background: #fff;
+}
+
+.netcard-panel {
+  padding: 20px;
+}
+
+.netcard-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.netcard-section-title {
+  font-weight: 700;
+  color: var(--nc-teal);
+  margin-bottom: 12px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.netcard-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--nc-teal);
+  color: #fff;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.netcard-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.netcard-tpl {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  transition: 0.2s;
+  position: relative;
+}
+
+.netcard-tpl.checked {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
+.netcard-tpl-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.netcard-tpl-check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+.netcard-tpl:hover,
+.netcard-tpl.selected {
+  border-color: var(--nc-teal);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+}
+
+.netcard-tpl.checked.selected {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.netcard-tpl.custom {
+  border-style: dashed;
+}
+
+.netcard-tpl-main {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.netcard-tpl-main img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+}
+
+.netcard-tpl-preview-btn,
+.netcard-tpl-delete-btn {
+  position: absolute;
+  top: 6px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.netcard-tpl-preview-btn {
+  left: 6px;
+  background: #fff;
+  color: var(--nc-teal);
+}
+
+.netcard-tpl-preview-btn:hover {
+  background: var(--nc-bg);
+}
+
+.netcard-tpl-delete-btn {
+  right: 6px;
+  background: #fef2f2;
+  color: #ef4444;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.netcard-tpl-delete-btn:hover {
+  background: #fee2e2;
+}
+
+.netcard-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.netcard-preview-modal {
+  background: #fff;
+  border-radius: 16px;
+  max-width: min(920px, 96vw);
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+.netcard-preview-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  background: var(--nc-bg);
+}
+
+.netcard-preview-modal-head h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--nc-teal);
+}
+
+.netcard-preview-close {
+  border: none;
+  background: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.netcard-preview-modal-body {
+  padding: 16px;
+  overflow: auto;
+  text-align: center;
+  background: #f1f5f9;
+}
+
+.netcard-preview-modal-body img {
+  max-width: 100%;
+  max-height: 65vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.netcard-preview-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.netcard-preview-loading {
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.netcard-tpl-ph {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.netcard-tpl span {
+  display: block;
+  padding: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.netcard-input-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .netcard-input-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.netcard-input-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.netcard-input-row label span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.netcard-input-row input {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.netcard-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.netcard-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 2px solid var(--nc-teal);
+  background: #fff;
+  color: var(--nc-teal);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.netcard-btn:hover:not(:disabled) {
+  background: var(--nc-bg);
+}
+
+.netcard-btn.primary,
+.netcard-btn.primary:hover {
+  background: var(--nc-teal);
+  color: #fff;
+}
+
+.netcard-btn.danger {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.netcard-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.netcard-file-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border: 2px dashed var(--nc-teal);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--nc-teal);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.netcard-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+
+@media (max-width: 960px) {
+  .netcard-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.netcard-canvas-box {
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  background: #e2e8f0;
+  overflow: auto;
+  max-height: 78vh;
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  /* flex-start: يمنع قصّ الجزء العلوي عندما يكون القالب أطول من الحاوية */
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12px;
+  width: 100%;
+}
+
+.netcard-canvas-box canvas {
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.netcard-canvas-size {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  font-size: 11px;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.netcard-layout-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 10px;
+}
+
+.netcard-layout-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--nc-teal);
+}
+
+.netcard-layout-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 2px solid #cbd5e1;
+  background: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  color: #475569;
+}
+
+.netcard-layout-btn.active {
+  border-color: var(--nc-teal);
+  background: var(--nc-teal);
+  color: #fff;
+}
+
+.netcard-layer-readonly {
+  cursor: default;
+  opacity: 0.9;
+}
+
+.netcard-design-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.netcard-design-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.netcard-save-status {
+  font-size: 12px;
+  color: #059669;
+  font-weight: 700;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.netcard-saved-dot {
+  color: #059669;
+  font-weight: 800;
+}
+
+.netcard-preview-banner {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #92400e;
+}
+
+.netcard-export-all {
+  margin-top: 8px;
+  background: #0d9488;
+}
+
+.netcard-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.netcard-layout-hint {
+  margin: 8px 0 12px;
+  padding: 8px 12px;
+  background: #ecfdf5;
+  border-radius: 8px;
+  border: 1px solid #99f6e4;
+}
+
+.netcard-export-preview-modal .netcard-preview-modal-body img {
+  max-height: 70vh;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.netcard-export-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.netcard-export-row .netcard-export-btn {
+  flex: 1 1 140px;
+  width: auto;
+  margin-top: 0;
+  font-size: 13px;
+  padding: 12px 10px;
+}
+
+.netcard-prop-check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  grid-column: 1 / -1;
+}
+
+.netcard-prop-check input {
+  width: auto;
+  margin: 0;
+}
+
+.netcard-export-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 8px;
+  background: var(--nc-teal);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.netcard-export-btn:hover:not(:disabled) {
+  background: var(--nc-teal-dark);
+}
+
+.netcard-export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.netcard-wa-btn {
+  background: #25d366;
+}
+
+.netcard-wa-btn:hover:not(:disabled) {
+  background: #1da851;
+}
+
+.netcard-export-all {
+  margin-top: 8px;
+  background: #0d9488;
+}
+
+.netcard-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.netcard-layer-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.netcard-layer-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 6px;
+  cursor: pointer;
+  background: #fff;
+  font-size: 13px;
+}
+
+.netcard-layer-item.selected {
+  border-color: var(--nc-teal);
+  background: var(--nc-bg);
+}
+
+.netcard-layer-item.hidden-layer {
+  opacity: 0.55;
+}
+
+.netcard-props {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.netcard-props label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.netcard-props label span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.netcard-props input,
+.netcard-props select {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.netcard-hint {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+/* معاينة أفقية لكل القوالب */
+.netcard-scroll-preview {
+  margin-top: 4px;
+}
+
+.netcard-scroll-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.netcard-scroll-preview-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 4px 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.netcard-scroll-preview-track::-webkit-scrollbar {
+  height: 8px;
+}
+
+.netcard-scroll-preview-track::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+
+.netcard-scroll-preview-card {
+  flex: 0 0 auto;
+  width: 200px;
+  scroll-snap-align: start;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  padding: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.netcard-scroll-preview-card:hover {
+  border-color: var(--nc-teal-light);
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.15);
+}
+
+.netcard-scroll-preview-card.active {
+  border-color: var(--nc-teal);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.2);
+}
+
+.netcard-scroll-preview-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  background: #f1f5f9;
+}
+
+.netcard-scroll-preview-card span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+}

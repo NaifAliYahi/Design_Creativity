@@ -1,0 +1,631 @@
+{
+  "template1": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.4746,
+      "yRatio": 0.2,
+      "markerWRatio": 0.0339,
+      "markerHRatio": 0.0314,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.082,
+      "fontSize": 50,
+      "color": "#0a0909",
+      "coverFill": "#f5f1f2"
+    },
+    "code": {
+      "xRatio": 0.3502,
+      "yRatio": 0.8713,
+      "markerWRatio": 0.0045,
+      "markerHRatio": 0.0257,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 41,
+      "color": "#531f1c",
+      "coverFill": "#efe9e8"
+    },
+    "phone": {
+      "xRatio": 0.7956,
+      "yRatio": 0.8736,
+      "markerWRatio": 0.0196,
+      "markerHRatio": 0.0421,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.1091,
+      "fontSize": 67,
+      "color": "#ffffff",
+      "coverFill": "#ede8e7"
+    }
+  },
+  "template2": {
+    "width": 1055,
+    "height": 1491,
+    "name": {
+      "xRatio": 0.4649,
+      "yRatio": 0.1539,
+      "markerWRatio": 0.0076,
+      "markerHRatio": 0.0174,
+      "boxWRatio": 0.3194,
+      "boxHRatio": 0.0798,
+      "fontSize": 29,
+      "color": "#2a2a2e",
+      "coverFill": "#f3f2f4"
+    },
+    "code": {
+      "xRatio": 0.3138,
+      "yRatio": 0.8151,
+      "markerWRatio": 0.0275,
+      "markerHRatio": 0.0295,
+      "boxWRatio": 0.3194,
+      "boxHRatio": 0.0798,
+      "fontSize": 50,
+      "color": "#070707",
+      "coverFill": "#f8f6f7"
+    },
+    "phone": {
+      "xRatio": 0.6852,
+      "yRatio": 0.82,
+      "markerWRatio": 0.0322,
+      "markerHRatio": 0.0309,
+      "boxWRatio": 0.3204,
+      "boxHRatio": 0.0798,
+      "fontSize": 52,
+      "color": "#0b0b0b",
+      "coverFill": "#f6f4f6"
+    }
+  },
+  "template3": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.4721,
+      "yRatio": 0.1928,
+      "markerWRatio": 0.008,
+      "markerHRatio": 0.0057,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#efe0e2"
+    },
+    "code": {
+      "xRatio": 0.1744,
+      "yRatio": 0.9211,
+      "markerWRatio": 0.0258,
+      "markerHRatio": 0.0136,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#2f2a2b",
+      "coverFill": "#f5e8ea"
+    },
+    "phone": {
+      "xRatio": 0.8176,
+      "yRatio": 0.921,
+      "markerWRatio": 0.0383,
+      "markerHRatio": 0.0114,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#302d2e",
+      "coverFill": "#f5eaec"
+    }
+  },
+  "template4": {
+    "width": 1055,
+    "height": 1491,
+    "name": {
+      "xRatio": 0.473,
+      "yRatio": 0.1552,
+      "markerWRatio": 0.0085,
+      "markerHRatio": 0.0241,
+      "boxWRatio": 0.3194,
+      "boxHRatio": 0.0798,
+      "fontSize": 41,
+      "color": "#303030",
+      "coverFill": "#f2f1f1"
+    },
+    "code": {
+      "xRatio": 0.2893,
+      "yRatio": 0.8,
+      "markerWRatio": 0.0275,
+      "markerHRatio": 0.0181,
+      "boxWRatio": 0.3194,
+      "boxHRatio": 0.0798,
+      "fontSize": 31,
+      "color": "#080808",
+      "coverFill": "#f8f6f6"
+    },
+    "phone": {
+      "xRatio": 0.702,
+      "yRatio": 0.8064,
+      "markerWRatio": 0.0322,
+      "markerHRatio": 0.0221,
+      "boxWRatio": 0.2995,
+      "boxHRatio": 0.0798,
+      "fontSize": 37,
+      "color": "#0b0b0b",
+      "coverFill": "#f2f1f1"
+    }
+  },
+  "template5": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.5265,
+      "yRatio": 0.1888,
+      "markerWRatio": 0.0071,
+      "markerHRatio": 0.0057,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#131112",
+      "coverFill": "#f2eced"
+    },
+    "code": {
+      "xRatio": 0.1553,
+      "yRatio": 0.8381,
+      "markerWRatio": 0.0437,
+      "markerHRatio": 0.0442,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.1148,
+      "fontSize": 71,
+      "color": "#ffffff",
+      "coverFill": "#f2e9ea"
+    },
+    "phone": {
+      "xRatio": 0.8429,
+      "yRatio": 0.8377,
+      "markerWRatio": 0.049,
+      "markerHRatio": 0.0385,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.1006,
+      "fontSize": 62,
+      "color": "#ffffff",
+      "coverFill": "#f3ebec"
+    }
+  },
+  "template6": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.5492,
+      "yRatio": 0.154,
+      "markerWRatio": 0.0713,
+      "markerHRatio": 0.0285,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 46,
+      "color": "#ffffff",
+      "coverFill": "#eadfdd"
+    },
+    "code": {
+      "xRatio": 0.1652,
+      "yRatio": 0.8848,
+      "markerWRatio": 0.0383,
+      "markerHRatio": 0.0121,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#1a1a1a",
+      "coverFill": "#f4f0f0"
+    },
+    "phone": {
+      "xRatio": 0.8257,
+      "yRatio": 0.8836,
+      "markerWRatio": 0.0223,
+      "markerHRatio": 0.0093,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0271,
+      "fontSize": 26,
+      "color": "#1d1d1d",
+      "coverFill": "#f4f1f1"
+    }
+  },
+  "template7": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.4831,
+      "yRatio": 0.2019,
+      "markerWRatio": 0.008,
+      "markerHRatio": 0.0064,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#f6ecee"
+    },
+    "code": {
+      "xRatio": 0.177,
+      "yRatio": 0.9301,
+      "markerWRatio": 0.0071,
+      "markerHRatio": 0.0057,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#514142",
+      "coverFill": "#f3d4d6"
+    },
+    "phone": {
+      "xRatio": 0.8244,
+      "yRatio": 0.8695,
+      "markerWRatio": 0.0392,
+      "markerHRatio": 0.0314,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.082,
+      "fontSize": 50,
+      "color": "#79343a",
+      "coverFill": "#f8e3e4"
+    }
+  },
+  "template8": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.4791,
+      "yRatio": 0.205,
+      "markerWRatio": 0.0339,
+      "markerHRatio": 0.0314,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.082,
+      "fontSize": 50,
+      "color": "#0a090a",
+      "coverFill": "#f4eff0"
+    },
+    "code": {
+      "xRatio": 0.3502,
+      "yRatio": 0.8713,
+      "markerWRatio": 0.0045,
+      "markerHRatio": 0.0257,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 41,
+      "color": "#531f1c",
+      "coverFill": "#efe9e8"
+    },
+    "phone": {
+      "xRatio": 0.7956,
+      "yRatio": 0.8736,
+      "markerWRatio": 0.0196,
+      "markerHRatio": 0.0421,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.1091,
+      "fontSize": 67,
+      "color": "#ffffff",
+      "coverFill": "#ede8e7"
+    }
+  },
+  "template9": {
+    "width": 1055,
+    "height": 1491,
+    "name": {
+      "xRatio": 0.4649,
+      "yRatio": 0.1539,
+      "markerWRatio": 0.0076,
+      "markerHRatio": 0.0174,
+      "boxWRatio": 0.3194,
+      "boxHRatio": 0.0798,
+      "fontSize": 29,
+      "color": "#2a2a2e",
+      "coverFill": "#f3f2f4"
+    },
+    "code": {
+      "xRatio": 0.3043,
+      "yRatio": 0.8158,
+      "markerWRatio": 0.0275,
+      "markerHRatio": 0.0295,
+      "boxWRatio": 0.3194,
+      "boxHRatio": 0.0798,
+      "fontSize": 50,
+      "color": "#070707",
+      "coverFill": "#f8f6f7"
+    },
+    "phone": {
+      "xRatio": 0.6966,
+      "yRatio": 0.82,
+      "markerWRatio": 0.0322,
+      "markerHRatio": 0.0309,
+      "boxWRatio": 0.309,
+      "boxHRatio": 0.0798,
+      "fontSize": 52,
+      "color": "#0b0b0b",
+      "coverFill": "#f6f4f6"
+    }
+  },
+  "template10": {
+    "width": 1122,
+    "height": 1402,
+    "name": {
+      "xRatio": 0.4737,
+      "yRatio": 0.1938,
+      "markerWRatio": 0.0062,
+      "markerHRatio": 0.0086,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#d8aaad",
+      "coverFill": "#eedee0"
+    },
+    "code": {
+      "xRatio": 0.1744,
+      "yRatio": 0.9211,
+      "markerWRatio": 0.0258,
+      "markerHRatio": 0.0136,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#2f2a2b",
+      "coverFill": "#f5e8ea"
+    },
+    "phone": {
+      "xRatio": 0.8177,
+      "yRatio": 0.921,
+      "markerWRatio": 0.0383,
+      "markerHRatio": 0.0114,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0806,
+      "fontSize": 26,
+      "color": "#302d2d",
+      "coverFill": "#f5eaec"
+    }
+  },
+  "template11": {
+    "width": 1023,
+    "height": 1537,
+    "name": {
+      "xRatio": 0.6405,
+      "yRatio": 0.5135,
+      "markerWRatio": 0.0313,
+      "markerHRatio": 0.0085,
+      "boxWRatio": 0.3196,
+      "boxHRatio": 0.08,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#dcdcdc"
+    },
+    "code": {
+      "xRatio": 0.6261,
+      "yRatio": 0.4354,
+      "markerWRatio": 0.042,
+      "markerHRatio": 0.0124,
+      "boxWRatio": 0.3196,
+      "boxHRatio": 0.08,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#e0e0e0"
+    },
+    "phone": {
+      "xRatio": 0.1476,
+      "yRatio": 0.8679,
+      "markerWRatio": 0.0186,
+      "markerHRatio": 0.0091,
+      "boxWRatio": 0.3196,
+      "boxHRatio": 0.08,
+      "fontSize": 26,
+      "color": "#430101",
+      "coverFill": "#eae0e0"
+    }
+  },
+  "template12": {
+    "width": 922,
+    "height": 1152,
+    "name": {
+      "xRatio": 0.1253,
+      "yRatio": 0.1054,
+      "markerWRatio": 0.0412,
+      "markerHRatio": 0.0382,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0998,
+      "fontSize": 50,
+      "color": "#0a0a0a",
+      "coverFill": "#fefefe"
+    },
+    "code": {
+      "xRatio": 0.781,
+      "yRatio": 0.5605,
+      "markerWRatio": 0.0098,
+      "markerHRatio": 0.0113,
+      "boxWRatio": 0.32,
+      "boxHRatio": 0.0807,
+      "fontSize": 26,
+      "color": "#313131",
+      "coverFill": "#f4ebed"
+    },
+    "phone": {
+      "xRatio": 0.5352,
+      "yRatio": 0.9048,
+      "markerWRatio": 0.0846,
+      "markerHRatio": 0.0747,
+      "boxWRatio": 0.372,
+      "boxHRatio": 0.1936,
+      "fontSize": 72,
+      "color": "#ffffff",
+      "coverFill": "#ebe9ed"
+    }
+  },
+  "template13": {
+    "width": 1600,
+    "height": 959,
+    "name": {
+      "xRatio": 0.72,
+      "yRatio": 0.2596,
+      "markerWRatio": 0.0238,
+      "markerHRatio": 0.0396,
+      "boxWRatio": 0.1113,
+      "boxHRatio": 0.121,
+      "fontSize": 43,
+      "color": "#101010",
+      "coverFill": "#eeeded"
+    },
+    "code": {
+      "xRatio": 0.7216,
+      "yRatio": 0.5689,
+      "markerWRatio": 0.0037,
+      "markerHRatio": 0.0063,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.0803,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#f7dede"
+    },
+    "phone": {
+      "xRatio": 0.5272,
+      "yRatio": 0.9263,
+      "markerWRatio": 0.0338,
+      "markerHRatio": 0.0605,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.1575,
+      "fontSize": 66,
+      "color": "#ffffff",
+      "coverFill": "#f5f2f3"
+    }
+  },
+  "template14": {
+    "width": 1335,
+    "height": 800,
+    "name": {
+      "xRatio": 0.7638,
+      "yRatio": 0.2225,
+      "markerWRatio": 0.0127,
+      "markerHRatio": 0.07,
+      "boxWRatio": 0.3199,
+      "boxHRatio": 0.1812,
+      "fontSize": 64,
+      "color": "#585859",
+      "coverFill": "#d9d8d7"
+    },
+    "code": {
+      "xRatio": 0.7064,
+      "yRatio": 0.4541,
+      "markerWRatio": 0.0067,
+      "markerHRatio": 0.0138,
+      "boxWRatio": 0.3199,
+      "boxHRatio": 0.0813,
+      "fontSize": 26,
+      "color": "#362a1f",
+      "coverFill": "#b8a48c"
+    },
+    "phone": {
+      "xRatio": 0.7068,
+      "yRatio": 0.7056,
+      "markerWRatio": 0.0255,
+      "markerHRatio": 0.0575,
+      "boxWRatio": 0.3199,
+      "boxHRatio": 0.1487,
+      "fontSize": 52,
+      "color": "#110000",
+      "coverFill": "#ffffff"
+    }
+  },
+  "template15": {
+    "width": 1600,
+    "height": 960,
+    "name": {
+      "xRatio": 0.5357,
+      "yRatio": 0.5245,
+      "markerWRatio": 0.0238,
+      "markerHRatio": 0.0458,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.1198,
+      "fontSize": 50,
+      "color": "#0d0d0d",
+      "coverFill": "#ede5e2"
+    },
+    "code": {
+      "xRatio": 0.5349,
+      "yRatio": 0.3635,
+      "markerWRatio": 0.0213,
+      "markerHRatio": 0.0469,
+      "boxWRatio": 0.1081,
+      "boxHRatio": 0.1219,
+      "fontSize": 51,
+      "color": "#0b0a0a",
+      "coverFill": "#f0eceb"
+    },
+    "phone": {
+      "xRatio": 0.2368,
+      "yRatio": 0.8435,
+      "markerWRatio": 0.0181,
+      "markerHRatio": 0.0208,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.0802,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#eeddda"
+    }
+  },
+  "template16": {
+    "width": 1600,
+    "height": 960,
+    "name": {
+      "xRatio": 0.5309,
+      "yRatio": 0.5369,
+      "markerWRatio": 0.0238,
+      "markerHRatio": 0.0458,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.1198,
+      "fontSize": 50,
+      "color": "#0a0a0a",
+      "coverFill": "#ecedf1"
+    },
+    "code": {
+      "xRatio": 0.5237,
+      "yRatio": 0.386,
+      "markerWRatio": 0.0213,
+      "markerHRatio": 0.0479,
+      "boxWRatio": 0.1044,
+      "boxHRatio": 0.124,
+      "fontSize": 52,
+      "color": "#0b0b0b",
+      "coverFill": "#f0f0f2"
+    },
+    "phone": {
+      "xRatio": 0.5288,
+      "yRatio": 0.6951,
+      "markerWRatio": 0.0181,
+      "markerHRatio": 0.0458,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.1198,
+      "fontSize": 50,
+      "color": "#070707",
+      "coverFill": "#ededf0"
+    }
+  },
+  "template17": {
+    "width": 1600,
+    "height": 900,
+    "name": {
+      "xRatio": 0.7107,
+      "yRatio": 0.1477,
+      "markerWRatio": 0.0094,
+      "markerHRatio": 0.0178,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.0611,
+      "fontSize": 26,
+      "color": "#ffffff",
+      "coverFill": "#f2e9e8"
+    },
+    "code": {
+      "xRatio": 0.2175,
+      "yRatio": 0.5345,
+      "markerWRatio": 0.0063,
+      "markerHRatio": 0.0078,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.0811,
+      "fontSize": 26,
+      "color": "#444444",
+      "coverFill": "#f5f0f0"
+    },
+    "phone": {
+      "xRatio": 0.7754,
+      "yRatio": 0.5112,
+      "markerWRatio": 0.0037,
+      "markerHRatio": 0.0067,
+      "boxWRatio": 0.3206,
+      "boxHRatio": 0.0811,
+      "fontSize": 26,
+      "color": "#5e2324",
+      "coverFill": "#ede8e8"
+    }
+  }
+}

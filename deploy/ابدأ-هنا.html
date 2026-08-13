@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مصمم بطاقات محفظة جيب</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      color: #fff;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      color: #1e293b;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 8px; color: #0f172a; }
+    .sub { color: #64748b; font-size: 0.9rem; margin-bottom: 24px; }
+    .steps { text-align: right; line-height: 1.9; font-size: 0.95rem; }
+    .steps li { margin-bottom: 8px; }
+    a.btn {
+      display: block;
+      text-align: center;
+      background: #16a34a;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-top: 20px;
+    }
+    a.btn:hover { background: #15803d; }
+    .note {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #166534;
+    }
+    .warn {
+      margin-top: 12px;
+      padding: 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #991b1b;
+    }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎨 مصمم بطاقات محفظة جيب</h1>
+    <p class="sub">مجاني 100% — بدون تثبيت على جهازك</p>
+
+    <ol class="steps">
+      <li>فك ضغط ملف <code>site-netlify.zip</code></li>
+      <li>افتح الرابط أدناه (Netlify Drop)</li>
+      <li>اسحب مجلد <code>site</code> إلى الصفحة</li>
+      <li>انسخ الرابط + أضف <code>/design</code></li>
+    </ol>
+
+    <a class="btn" href="https://app.netlify.com/drop" target="_blank" rel="noopener">
+      ← اضغط هنا: رفع الموقع مجاناً
+    </a>
+
+    <div class="note">
+      ✅ Netlify Drop = مجاني · لا بطاقة ائتمان · لا كلمة مرور للزوار<br>
+      رابط العملاء: <strong>https://اسم-موقعك.netlify.app/design</strong>
+    </div>
+
+    <div class="warn">
+      ⚠️ إذا ظهرت «Password protected site» — هذا إعداد Netlify وليس البرنامج.<br>
+      ادخل netlify.com → موقعك → Access control → اجعلها <strong>Public</strong>
+    </div>
+  </div>
+</body>
+</html>

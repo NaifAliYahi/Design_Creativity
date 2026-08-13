@@ -1,0 +1,27 @@
+﻿# ——— لا ترفع هذه الملفات على GitHub ———
+
+# المكتبات (يُعاد تثبيتها تلقائياً على Render)
+node_modules/
+
+# ملفات البناء (يُعاد بناؤها: npm run build)
+dist/
+release/
+*.zip
+
+# بيانات محلية للموظفين — سرية
+**/server/data/store.json
+**/server/data/*.json
+!server/data/.gitkeep
+
+# ملفات مؤقتة
+tsconfig.tsbuildinfo
+.vite/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+runtime-path.txt
+
+# متغيرات بيئة
+.env
+.env.*
