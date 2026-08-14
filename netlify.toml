@@ -2,10 +2,12 @@
 # https://app.netlify.com → Import from Git → mahfazat-jeeb-design
 
 [build]
-  command = "npm run build"
+  command = "npm run build:netlify"
   publish = "dist"
 
+# SPA — كل المسارات (بما فيها /design) تُخدم من index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false

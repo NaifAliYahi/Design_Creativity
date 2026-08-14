@@ -7,6 +7,7 @@ import { STORAGE_KEY } from '../constants';
 import { STORAGE_KEY as NETCARD_LS_KEY, CUSTOM_TEMPLATES_LS_KEY } from './netcard/constants';
 import { ensureResponseTemplates } from './responses';
 import { api, isServerAvailable, getApiToken } from './api';
+import { assetUrl } from './assetUrl';
 
 const DB_NAME = 'cs-operations-db';
 const DB_VERSION = 3;
@@ -22,6 +23,22 @@ export interface CSDB {
 
 let dbPromise: Promise<IDBPDatabase<CSDB>> | null = null;
 let useServer = false;
+let bundledLayoutsCache: Record<string, TemplateStoreEntry> | null = null;
+
+async function loadBundledLayouts(): Promise<Record<string, TemplateStoreEntry>> {
+  if (bundledLayoutsCache) return bundledLayoutsCache;
+  try {
+    const r = await fetch(assetUrl('netcard/bundled-layouts.json'), { cache: 'no-cache' });
+    if (r.ok) {
+      bundledLayoutsCache = (await r.json()) as Record<string, TemplateStoreEntry>;
+      return bundledLayoutsCache;
+    }
+  } catch {
+    /* static file optional */
+  }
+  bundledLayoutsCache = {};
+  return bundledLayoutsCache;
+}
 
 async function initStorageMode(): Promise<boolean> {
   useServer = await isServerAvailable();
@@ -201,7 +218,11 @@ export async function loadNetcardTemplateStore(): Promise<Record<string, Templat
   await initStorageMode();
 
   if (useServer) {
-    return (await api.getNetcardTemplates()) as Record<string, TemplateStoreEntry>;
+    try {
+      return (await api.getNetcardTemplates()) as Record<string, TemplateStoreEntry>;
+    } catch {
+      return loadBundledLayouts();
+    }
   }
 
   const db = await getLocalDB();
@@ -211,7 +232,8 @@ export async function loadNetcardTemplateStore(): Promise<Record<string, Templat
     const entry = await db.get('netcardTemplates', key);
     if (entry) store[String(key)] = entry;
   }
-  return store;
+  const bundled = await loadBundledLayouts();
+  return { ...bundled, ...store };
 }
 
 export async function saveNetcardTemplateEntry(id: string, entry: TemplateStoreEntry): Promise<void> {

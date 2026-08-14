@@ -416,16 +416,6 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
       )}
 
       {guestMode && (
-        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          <strong>للموظف:</strong> لتعديل مواقع الليبلات (اسم/كود/هاتف) →{' '}
-          <a href="/login" className="font-bold underline">
-            سجّل دخول
-          </a>{' '}
-          → <strong>قالب التصميم</strong> (/studio)
-        </div>
-      )}
-
-      {guestMode && (
         <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50/80 px-4 py-3 text-sm text-brand-900">
           <strong>①</strong> أدخل بيانات الشبكة → <strong>②</strong> حدّد القوالب (☑) → <strong>③</strong> نزّل
           المحددة
@@ -555,7 +545,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
               />
               <p className="netcard-hint" style={{ marginTop: 8 }}>
                 {guestMode
-                  ? 'حدّد القوالب (☑) → أدخل البيانات → نزّل المحددة. يجب تصميم القوالب مسبقاً من الموظف.'
+                  ? 'حدّد القوالب (☑) → أدخل البيانات → نزّل المحددة.'
                   : 'حدّد قوالب (☑) → صمّم من «منطقة التصميم» → نزّل للعميل. وضع «القوالب المحددة» يطبّق التعديل على المحدد فقط.'}
               </p>
             </div>
@@ -574,33 +564,37 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                 </span>
               </div>
               <div className="netcard-btn-row" style={{ marginBottom: 12 }}>
-                <label className="netcard-file-btn">
-                  📁 رفع قالب خارجي (PNG/JPG)
-                  <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    disabled={uploadingCustom}
-                    onChange={async (e) => {
-                      const f = e.target.files?.[0];
-                      if (f) await handleExternalUpload(f);
-                      e.target.value = '';
-                    }}
-                  />
-                </label>
-                <label className="netcard-file-btn">
-                  👁 استعراض صورة خارجية
-                  <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={async (e) => {
-                      const f = e.target.files?.[0];
-                      if (f) await handleExternalUpload(f, true);
-                      e.target.value = '';
-                    }}
-                  />
-                </label>
+                {!guestMode && (
+                  <>
+                    <label className="netcard-file-btn">
+                      📁 رفع قالب خارجي (PNG/JPG)
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        disabled={uploadingCustom}
+                        onChange={async (e) => {
+                          const f = e.target.files?.[0];
+                          if (f) await handleExternalUpload(f);
+                          e.target.value = '';
+                        }}
+                      />
+                    </label>
+                    <label className="netcard-file-btn">
+                      👁 استعراض صورة خارجية
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={async (e) => {
+                          const f = e.target.files?.[0];
+                          if (f) await handleExternalUpload(f, true);
+                          e.target.value = '';
+                        }}
+                      />
+                    </label>
+                  </>
+                )}
               </div>
               <p className="netcard-hint" style={{ marginBottom: 12 }}>
                 {guestMode ? (
@@ -957,20 +951,22 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
               )}
 
               <div className="netcard-btn-row">
-                <label className="netcard-file-btn">
-                  + صورة
-                  <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    disabled={!designer.bgLoaded}
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) designer.addImageLayer(f);
-                      e.target.value = '';
-                    }}
-                  />
-                </label>
+                {!guestMode && (
+                  <label className="netcard-file-btn">
+                    + صورة
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      disabled={!designer.bgLoaded}
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) designer.addImageLayer(f);
+                        e.target.value = '';
+                      }}
+                    />
+                  </label>
+                )}
                 {!guestMode && (
                   <>
                     <button type="button" className="netcard-btn danger" onClick={designer.deleteLayer} disabled={!designer.selectedId}>
