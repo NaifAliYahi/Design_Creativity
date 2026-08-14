@@ -6,7 +6,7 @@ import {
 import { drawTextLayer, layerDisplayText, measureTextLayer } from '../lib/netcard/draw-text-layer';
 import { loadTemplateImage } from '../lib/netcard/templates';
 import { loadTemplateStore, saveTemplateEntry, getSavedTemplateSummary } from '../lib/netcard/storage';
-import { isTextLayerType, resolveTemplateLayers } from '../lib/netcard/template-layout';
+import { resolveTemplateLayers } from '../lib/netcard/template-layout';
 import type { DesignLayer, LayerType, NetworkFields } from '../lib/netcard/types';
 
 function getLayerText(layer: DesignLayer, fields: NetworkFields, preview: boolean, guestMode: boolean): string {
@@ -106,7 +106,7 @@ export function useNetCardDesigner(
   const persistLayers = useCallback(
     (next: DesignLayer[], bg?: string) => {
       const id = templateIdRef.current;
-      if (!id || guestMode) return;
+      if (!id) return;
       const entry = {
         layers: JSON.parse(JSON.stringify(next)),
         background: bg || bgImageRef.current?.src,
@@ -118,12 +118,12 @@ export function useNetCardDesigner(
         })
         .catch((e) => console.warn('persistLayers', e));
     },
-    [guestMode]
+    []
   );
 
   const flushSave = useCallback(async () => {
     const id = templateIdRef.current;
-    if (!id || guestMode || !layersRef.current.length) return;
+    if (!id || !layersRef.current.length) return;
     await saveTemplateEntry(id, {
       layers: JSON.parse(JSON.stringify(layersRef.current)),
       background: bgImageRef.current?.src,
@@ -131,7 +131,7 @@ export function useNetCardDesigner(
     });
     setLastSavedAt(Date.now());
     setSavedSummary((prev) => ({ ...prev, [id]: layersRef.current.length }));
-  }, [guestMode]);
+  }, []);
 
   const measureText = useCallback((ctx: CanvasRenderingContext2D, layer: DesignLayer, text: string) => {
     return measureTextLayer(ctx, layer, text);
@@ -251,7 +251,7 @@ export function useNetCardDesigner(
       setBgLoaded(false);
       try {
         const prevId = templateIdRef.current;
-        if (prevId && prevId !== id && !guestMode && layersRef.current.length) {
+        if (prevId && prevId !== id && layersRef.current.length) {
           await saveTemplateEntry(prevId, {
             layers: JSON.parse(JSON.stringify(layersRef.current)),
             background: bgImageRef.current?.src,
@@ -280,7 +280,7 @@ export function useNetCardDesigner(
         const hadSaved = (store[id]?.layers?.length ?? 0) > 0;
         const initial = await resolveTemplateLayers(id, w, h);
         setLayers(JSON.parse(JSON.stringify(initial)));
-        if (initial.length > 0 && !hadSaved && !guestMode) {
+        if (initial.length > 0 && !hadSaved) {
           saveTemplateEntry(id, { layers: initial, background: src }).catch(() => {});
         }
         setSelectedId(null);
@@ -587,10 +587,6 @@ export function useNetCardDesigner(
       const hit = hitTest(x, y);
       if (hit) {
         const l = layersRef.current.find((layer) => layer.id === hit)!;
-        if (guestMode && isTextLayerType(l.type)) {
-          setSelectedId(null);
-          return;
-        }
         setSelectedId(hit);
         pushHistory();
         dragRef.current = { mode: 'move', startX: x, startY: y, ox: l.x, oy: l.y, layer: JSON.parse(JSON.stringify(l)) };

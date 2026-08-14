@@ -129,7 +129,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
       setTab('design');
       return;
     }
-    if (!guestMode && designer.templateId) {
+    if (designer.templateId) {
       await designer.flushSave();
     }
     setPreview(null);
@@ -417,8 +417,8 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
 
       {guestMode && (
         <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50/80 px-4 py-3 text-sm text-brand-900">
-          <strong>①</strong> أدخل بيانات الشبكة → <strong>②</strong> حدّد القوالب (☑) → <strong>③</strong> نزّل
-          المحددة
+          <strong>①</strong> أدخل بيانات الشبكة → <strong>②</strong> حدّد القوالب (☑) → <strong>③</strong> عدّل
+          مواقع الليبلات من «منطقة التصميم» → <strong>④</strong> نزّل المحددة
         </div>
       )}
 
@@ -545,7 +545,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
               />
               <p className="netcard-hint" style={{ marginTop: 8 }}>
                 {guestMode
-                  ? 'حدّد القوالب (☑) → أدخل البيانات → نزّل المحددة.'
+                  ? 'حدّد القوالب (☑) → أدخل البيانات → من «منطقة التصميم» اسحب الليبلات وعدّلها → نزّل.'
                   : 'حدّد قوالب (☑) → صمّم من «منطقة التصميم» → نزّل للعميل. وضع «القوالب المحددة» يطبّق التعديل على المحدد فقط.'}
               </p>
             </div>
@@ -897,6 +897,12 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                 </div>
               )}
 
+              {guestMode && (
+                <p className="netcard-hint netcard-layout-hint">
+                  ✓ اسحب الليبلات على القالب — التعديل يُحفظ تلقائياً في متصفحك لكل قالب
+                </p>
+              )}
+
               {!guestMode && (
                 <p className="netcard-hint netcard-layout-hint">
                   {layoutMode === 'single'
@@ -905,50 +911,52 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                 </p>
               )}
 
-              {!guestMode && (
-                <div className="netcard-btn-row">
-                  {(['name', 'code', 'phone'] as LayerType[]).map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      className={`netcard-btn ${designer.selectedLayer?.type === type ? 'primary' : ''}`}
-                      style={
-                        designer.selectedLayer?.type === type
-                          ? undefined
-                          : { borderColor: TYPE_COLORS[type], color: TYPE_COLORS[type] }
-                      }
-                      onClick={() => designer.selectLayerByType(type)}
-                      disabled={!designer.bgLoaded}
-                    >
-                      ✥ {TYPE_LABELS[type]}
-                    </button>
-                  ))}
-                  {(layoutMode === 'selected' || layoutMode === 'all') && (
-                    <button
-                      type="button"
-                      className="netcard-btn"
-                      onClick={handleApplySelectedToAll}
-                      disabled={!designer.selectedLayer || layoutBusy || getSyncTargetIds().length === 0}
-                    >
-                      ⬆ طبّق الليبل الحالي
-                    </button>
-                  )}
+              <div className="netcard-btn-row">
+                {(['name', 'code', 'phone'] as LayerType[]).map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`netcard-btn ${designer.selectedLayer?.type === type ? 'primary' : ''}`}
+                    style={
+                      designer.selectedLayer?.type === type
+                        ? undefined
+                        : { borderColor: TYPE_COLORS[type], color: TYPE_COLORS[type] }
+                    }
+                    onClick={() => designer.selectLayerByType(type)}
+                    disabled={!designer.bgLoaded}
+                  >
+                    ✥ {TYPE_LABELS[type]}
+                  </button>
+                ))}
+                {!guestMode && (layoutMode === 'selected' || layoutMode === 'all') && (
                   <button
                     type="button"
                     className="netcard-btn"
-                    onClick={handleApplyAllLayersToAll}
-                    disabled={!designer.bgLoaded || layoutBusy || getSyncTargetIds().length === 0}
+                    onClick={handleApplySelectedToAll}
+                    disabled={!designer.selectedLayer || layoutBusy || getSyncTargetIds().length === 0}
                   >
-                    ⬆ طبّق الثلاثة ({layoutMode === 'all' ? allTemplateIds.length : selectedList.length || '—'})
+                    ⬆ طبّق الليبل الحالي
                   </button>
-                  <button type="button" className="netcard-btn danger" onClick={handleResetCurrent} disabled={layoutBusy}>
-                    ↺ إعادة القالب
-                  </button>
-                  <button type="button" className="netcard-btn danger" onClick={handleResetAll} disabled={layoutBusy}>
-                    ↺ إعادة الكل
-                  </button>
-                </div>
-              )}
+                )}
+                {!guestMode && (
+                  <>
+                    <button
+                      type="button"
+                      className="netcard-btn"
+                      onClick={handleApplyAllLayersToAll}
+                      disabled={!designer.bgLoaded || layoutBusy || getSyncTargetIds().length === 0}
+                    >
+                      ⬆ طبّق الثلاثة ({layoutMode === 'all' ? allTemplateIds.length : selectedList.length || '—'})
+                    </button>
+                    <button type="button" className="netcard-btn danger" onClick={handleResetAll} disabled={layoutBusy}>
+                      ↺ إعادة الكل
+                    </button>
+                  </>
+                )}
+                <button type="button" className="netcard-btn danger" onClick={handleResetCurrent} disabled={layoutBusy}>
+                  ↺ إعادة القالب
+                </button>
+              </div>
 
               <div className="netcard-btn-row">
                 {!guestMode && (
@@ -972,11 +980,11 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                     <button type="button" className="netcard-btn danger" onClick={designer.deleteLayer} disabled={!designer.selectedId}>
                       حذف الطبقة
                     </button>
-                    <button type="button" className="netcard-btn" onClick={designer.undo}>
-                      ↩ تراجع
-                    </button>
                   </>
                 )}
+                <button type="button" className="netcard-btn" onClick={designer.undo}>
+                  ↩ تراجع
+                </button>
                 <button
                   type="button"
                   className={`netcard-btn ${designer.previewMode ? 'primary' : ''}`}
@@ -1006,7 +1014,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
 
               <p className="netcard-hint" style={{ margin: '8px 0' }}>
                 {guestMode
-                  ? 'الاسم والكود والهاتف جاهزون — أدخل بياناتك وصدّر.'
+                  ? 'انقر ✥ لتحديد ليبل · اسحبه · غيّر الحجم من الزوايا · عدّل اللون والخط من الجانب'
                   : layoutMode === 'single'
                     ? 'انقر ✥ لتحديد ليبل · اسحبه · غيّر الحجم من الزوايا · عدّل اللون والخط من الجانب'
                     : layoutMode === 'all'
@@ -1119,34 +1127,27 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                       {[...designer.layers].reverse().map((layer) => (
                         <div
                           key={layer.id}
-                          className={`netcard-layer-item ${layer.id === designer.selectedId ? 'selected' : ''} ${!layer.visible ? 'hidden-layer' : ''} ${guestMode ? 'netcard-layer-readonly' : ''}`}
-                          onClick={() => !guestMode && designer.setSelectedId(layer.id)}
+                          className={`netcard-layer-item ${layer.id === designer.selectedId ? 'selected' : ''} ${!layer.visible ? 'hidden-layer' : ''}`}
+                          onClick={() => designer.setSelectedId(layer.id)}
                         >
-                          {!guestMode && (
-                            <input
-                              type="checkbox"
-                              checked={layer.visible}
-                              onChange={(e) => {
-                                e.stopPropagation();
-                                designer.toggleVisible(layer.id);
-                              }}
-                            />
-                          )}
+                          <input
+                            type="checkbox"
+                            checked={layer.visible}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              designer.toggleVisible(layer.id);
+                            }}
+                          />
                           <span style={{ flex: 1 }}>{TYPE_LABELS[layer.type]}</span>
                         </div>
                       ))}
                       {designer.layers.length === 0 && (
-                        <p className="netcard-hint">
-                          {guestMode ? 'جاري تحميل الليبلات…' : 'اضغط ✥ لتحديد ليبل · اسحبه على القالب'}
-                        </p>
-                      )}
-                      {guestMode && designer.layers.length > 0 && (
-                        <p className="netcard-hint">الليبلات جاهزة — أدخل بياناتك وصدّر</p>
+                        <p className="netcard-hint">اضغط ✥ لتحديد ليبل · اسحبه على القالب</p>
                       )}
                     </div>
                   </div>
 
-                  {designer.selectedLayer && !guestMode && designer.selectedLayer.type !== 'image' && (
+                  {designer.selectedLayer && designer.selectedLayer.type !== 'image' && (
                     <div className="netcard-section">
                       <p className="netcard-section-title">
                         خصائص {TYPE_LABELS[designer.selectedLayer.type as LayerType]}
@@ -1272,7 +1273,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                     </div>
                   )}
 
-                  {designer.selectedLayer?.type === 'image' && !guestMode && (
+                  {designer.selectedLayer?.type === 'image' && (
                     <div className="netcard-section">
                       <p className="netcard-section-title">حجم الصورة</p>
                       <div className="netcard-props">
@@ -1304,7 +1305,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                     </div>
                   )}
 
-                  {!guestMode && !designer.selectedLayer && designer.layers.length > 0 && (
+                  {!designer.selectedLayer && designer.layers.length > 0 && (
                     <p className="netcard-hint">اضغط ✥ لتحديد ليبل · اسحبه · عدّل من الجانب</p>
                   )}
                 </div>

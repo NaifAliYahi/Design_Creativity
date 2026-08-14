@@ -1,13 +1,12 @@
-﻿# نشر تلقائي من GitHub — صفحة تصميم العملاء (/design)
-# https://app.netlify.com → Import from Git → mahfazat-jeeb-design
+# Netlify deploy - customer design page at /design
+# https://app.netlify.com -> Import from Git -> mahfazat-jeeb-design
 
 [build]
   command = "npm run build:netlify"
   publish = "dist"
 
-# SPA — كل المسارات (بما فيها /design) تُخدم من index.html
+# SPA: serve index.html for all routes (fixes refresh on /design)
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
