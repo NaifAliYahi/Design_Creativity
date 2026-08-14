@@ -9,6 +9,7 @@ import {
   defaultUsers,
   destroySession,
   hashPassword,
+  syncDefaultUsers,
 } from './auth.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -60,8 +61,10 @@ function ensureUsers() {
   let users = getJson('users');
   if (!Array.isArray(users) || users.length === 0) {
     users = defaultUsers();
-    setJson('users', users);
+  } else {
+    users = syncDefaultUsers(users);
   }
+  setJson('users', users);
   return users;
 }
 

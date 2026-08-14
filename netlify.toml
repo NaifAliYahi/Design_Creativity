@@ -1,0 +1,11 @@
+﻿# نشر تلقائي من GitHub — صفحة تصميم العملاء (/design)
+# https://app.netlify.com → Import from Git → mahfazat-jeeb-design
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

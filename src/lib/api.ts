@@ -27,7 +27,12 @@ export async function isServerAvailable(): Promise<boolean> {
   checkPromise = (async () => {
     try {
       const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(2500) });
-      serverOk = r.ok;
+      if (!r.ok) {
+        serverOk = false;
+        return false;
+      }
+      const data = (await r.json()) as { auth?: boolean };
+      serverOk = data.auth === true;
     } catch {
       serverOk = false;
     }
@@ -50,7 +55,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const r = await fetch(`${API}${path}`, { ...init, headers });
-  if (r.status === 401) throw new Error('API 401: unauthorized');
+  if (r.status === 401 && path !== '/auth/login') throw new Error('API 401: unauthorized');
   if (!r.ok) throw new Error(`API ${r.status}: ${path}`);
   if (r.status === 204) return undefined as T;
   return r.json() as Promise<T>;

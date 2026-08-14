@@ -66,3 +66,23 @@ export function defaultUsers() {
     passwordHash: hash,
   }));
 }
+
+/** يضمن حسابات الموظفين الافتراضية وكلمة المرور 1234 — دون مسح بيانات العملاء */
+export function syncDefaultUsers(users) {
+  const list = Array.isArray(users) ? [...users] : [];
+  for (const def of defaultUsers()) {
+    const idx = list.findIndex((u) => u.username.toLowerCase() === def.username.toLowerCase());
+    if (idx >= 0) {
+      list[idx] = {
+        ...list[idx],
+        displayName: def.displayName,
+        role: def.role,
+        active: true,
+        passwordHash: def.passwordHash,
+      };
+    } else {
+      list.push(def);
+    }
+  }
+  return list;
+}

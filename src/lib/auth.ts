@@ -49,7 +49,7 @@ export async function login(username: string, password: string): Promise<AuthSes
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
       return session;
     } catch {
-      return null;
+      /* سيرفر قديم أو بيانات غير متطابقة — جرّب التخزين المحلي */
     }
   }
 

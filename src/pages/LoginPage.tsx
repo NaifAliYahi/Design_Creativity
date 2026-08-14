@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { resetServerCheck } from '../lib/api';
 import { Button, Field, Input } from '../components/ui';
 
 export function LoginPage() {
@@ -10,6 +11,10 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    resetServerCheck();
+  }, []);
 
   useEffect(() => {
     if (session) navigate('/my-work', { replace: true });
