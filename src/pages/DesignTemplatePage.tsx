@@ -212,6 +212,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
     try {
       const entry = await addCustomTemplate(file);
       refreshCustomTemplates();
+      setSelectedIds((prev) => new Set(prev).add(entry.id));
       setPreview({ id: entry.id, label: entry.label, src: entry.base64, isCustom: true });
     } catch (e) {
       alert(e instanceof Error ? e.message : 'تعذر رفع القالب');
@@ -417,8 +418,8 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
 
       {guestMode && (
         <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50/80 px-4 py-3 text-sm text-brand-900">
-          <strong>①</strong> أدخل بيانات الشبكة → <strong>②</strong> حدّد القوالب (☑) → <strong>③</strong> عدّل
-          مواقع الليبلات من «منطقة التصميم» → <strong>④</strong> نزّل المحددة
+          <strong>①</strong> أدخل بيانات الشبكة → <strong>②</strong> حدّد القوالب (☑) أو <strong>استورد تصميمك</strong> →{' '}
+          <strong>③</strong> عدّل مواقع الليبلات → <strong>④</strong> نزّل المحددة
         </div>
       )}
 
@@ -564,36 +565,37 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                 </span>
               </div>
               <div className="netcard-btn-row" style={{ marginBottom: 12 }}>
-                {!guestMode && (
-                  <>
-                    <label className="netcard-file-btn">
-                      📁 رفع قالب خارجي (PNG/JPG)
-                      <input
-                        type="file"
-                        accept="image/*"
-                        hidden
-                        disabled={uploadingCustom}
-                        onChange={async (e) => {
-                          const f = e.target.files?.[0];
-                          if (f) await handleExternalUpload(f);
-                          e.target.value = '';
-                        }}
-                      />
-                    </label>
-                    <label className="netcard-file-btn">
-                      👁 استعراض صورة خارجية
-                      <input
-                        type="file"
-                        accept="image/*"
-                        hidden
-                        onChange={async (e) => {
-                          const f = e.target.files?.[0];
-                          if (f) await handleExternalUpload(f, true);
-                          e.target.value = '';
-                        }}
-                      />
-                    </label>
-                  </>
+                <label className="netcard-file-btn">
+                  📁 {guestMode ? 'استيراد تصميم (PNG/JPG)' : 'رفع قالب خارجي (PNG/JPG)'}
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    hidden
+                    disabled={uploadingCustom}
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (f) await handleExternalUpload(f);
+                      e.target.value = '';
+                    }}
+                  />
+                </label>
+                <label className="netcard-file-btn">
+                  👁 {guestMode ? 'معاينة قبل الاستيراد' : 'استعراض صورة خارجية'}
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    hidden
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (f) await handleExternalUpload(f, true);
+                      e.target.value = '';
+                    }}
+                  />
+                </label>
+                {uploadingCustom && (
+                  <span className="netcard-hint" style={{ margin: 0, alignSelf: 'center' }}>
+                    جاري استيراد التصميم…
+                  </span>
                 )}
               </div>
               <p className="netcard-hint" style={{ marginBottom: 12 }}>
