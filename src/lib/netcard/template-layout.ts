@@ -2,6 +2,8 @@
 import { loadTemplateStore, saveTemplateEntry } from './storage';
 import { resolveTemplateBackground } from './templates';
 import { buildPresetLayers } from './template-presets';
+import { loadOdooLayoutFile } from './layout-sources';
+import { normalizeDesignLayers } from './normalize-layer';
 import type { DesignLayer, LayerType } from './types';
 
 const TEXT_TYPES = ['name', 'code', 'phone'] as const;
@@ -39,10 +41,23 @@ export async function resolveTemplateLayers(
   ensureAll = true
 ): Promise<DesignLayer[]> {
   const store = await loadTemplateStore();
-  let layers: DesignLayer[] =
-    store[templateId]?.layers?.length > 0
-      ? JSON.parse(JSON.stringify(store[templateId]!.layers))
-      : buildPresetLayers(templateId, w, h);
+  let layers: DesignLayer[] = [];
+
+  if (store[templateId]?.layers?.length > 0) {
+    layers = normalizeDesignLayers(
+      JSON.parse(JSON.stringify(store[templateId]!.layers)),
+      w,
+      h
+    );
+  } else {
+    const fromOdoo = await loadOdooLayoutFile(templateId, w, h);
+    if (fromOdoo?.length) {
+      layers = fromOdoo;
+    } else {
+      layers = buildPresetLayers(templateId, w, h);
+    }
+  }
+
   layers = normalizeTextLayers(layers);
   if (ensureAll) layers = ensureThreeTextLayers(layers, w, h, templateId);
   return layers;
@@ -72,6 +87,13 @@ export function layerStylePatch(layer: DesignLayer): Partial<DesignLayer> {
     fontWeight: layer.fontWeight,
     textAlign: layer.textAlign,
     rotation: layer.rotation,
+    scaleX: layer.scaleX,
+    scaleY: layer.scaleY,
+    boxEnabled: layer.boxEnabled,
+    boxWidth: layer.boxWidth,
+    boxHeight: layer.boxHeight,
+    boxColor: layer.boxColor,
+    shadowOn: layer.shadowOn,
   };
 }
 

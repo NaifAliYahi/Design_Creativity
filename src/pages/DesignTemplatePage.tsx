@@ -1233,6 +1233,84 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                           />
                           <span>ظل للنص (وضوح أفضل)</span>
                         </label>
+                        <label className="netcard-prop-check">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(designer.selectedLayer.boxEnabled)}
+                            onChange={(e) =>
+                              designer.updateLayer(designer.selectedLayer!.id, {
+                                boxEnabled: e.target.checked,
+                              })
+                            }
+                          />
+                          <span>صندوق خلف النص (Odoo)</span>
+                        </label>
+                        <label>
+                          <span>عرض الصندوق</span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={Math.round(designer.selectedLayer.boxWidth || 0)}
+                            onChange={(e) =>
+                              designer.updateLayer(designer.selectedLayer!.id, {
+                                boxWidth: parseInt(e.target.value) || 0,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          <span>ارتفاع الصندوق</span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={Math.round(designer.selectedLayer.boxHeight || 0)}
+                            onChange={(e) =>
+                              designer.updateLayer(designer.selectedLayer!.id, {
+                                boxHeight: parseInt(e.target.value) || 0,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          <span>لون الصندوق</span>
+                          <input
+                            type="color"
+                            value={designer.selectedLayer.boxColor || '#ffffff'}
+                            onChange={(e) =>
+                              designer.updateLayer(designer.selectedLayer!.id, {
+                                boxColor: e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          <span>توسيع X %</span>
+                          <input
+                            type="number"
+                            min={20}
+                            max={500}
+                            value={Math.round((designer.selectedLayer.scaleX ?? 1) * 100)}
+                            onChange={(e) =>
+                              designer.updateLayer(designer.selectedLayer!.id, {
+                                scaleX: (parseInt(e.target.value) || 100) / 100,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          <span>توسيع Y %</span>
+                          <input
+                            type="number"
+                            min={20}
+                            max={500}
+                            value={Math.round((designer.selectedLayer.scaleY ?? 1) * 100)}
+                            onChange={(e) =>
+                              designer.updateLayer(designer.selectedLayer!.id, {
+                                scaleY: (parseInt(e.target.value) || 100) / 100,
+                              })
+                            }
+                          />
+                        </label>
                         <label>
                           <span>موقع X</span>
                           <input

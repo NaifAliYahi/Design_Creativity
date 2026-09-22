@@ -1,0 +1,12 @@
+﻿id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_netcard_template_public,netcard.template public read,model_netcard_template,base.group_public,1,0,0,0
+access_netcard_template_user,netcard.template user,model_netcard_template,jaib_netcard.group_netcard_user,1,0,0,0
+access_netcard_template_manager,netcard.template manager,model_netcard_template,jaib_netcard.group_netcard_manager,1,1,1,1
+access_netcard_layout_public,netcard.template.layout public read,model_netcard_template_layout,base.group_public,1,0,0,0
+access_netcard_layout_user,netcard.template.layout user,model_netcard_template_layout,jaib_netcard.group_netcard_user,1,1,1,0
+access_netcard_layout_manager,netcard.template.layout manager,model_netcard_template_layout,jaib_netcard.group_netcard_manager,1,1,1,1
+access_netcard_custom_public,netcard.custom.template public,model_netcard_custom_template,base.group_public,1,1,1,1
+access_netcard_custom_user,netcard.custom.template user,model_netcard_custom_template,jaib_netcard.group_netcard_user,1,1,1,1
+access_netcard_custom_manager,netcard.custom.template manager,model_netcard_custom_template,jaib_netcard.group_netcard_manager,1,1,1,1
+access_netcard_export_user,netcard.export.log user,model_netcard_export_log,jaib_netcard.group_netcard_user,1,1,1,0
+access_netcard_export_manager,netcard.export.log manager,model_netcard_export_log,jaib_netcard.group_netcard_manager,1,1,1,1

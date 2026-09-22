@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_jaib_netcard" model="ir.module.category">
+        <field name="name">مصمم بطاقات جيب</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="group_netcard_user" model="res.groups">
+        <field name="name">موظف — تصميم وتصدير</field>
+        <field name="category_id" ref="module_category_jaib_netcard"/>
+    </record>
+
+    <record id="group_netcard_manager" model="res.groups">
+        <field name="name">مدير — إدارة القوالب</field>
+        <field name="category_id" ref="module_category_jaib_netcard"/>
+        <field name="implied_ids" eval="[(4, ref('group_netcard_user'))]"/>
+    </record>
+</odoo>

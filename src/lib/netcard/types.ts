@@ -21,7 +21,15 @@ export interface DesignLayer {
   width: number;
   height: number;
   imageSrc: string | null;
-  /** لون خلفية صندوق الإدخال */
+  /** تكبير/تصغير (مثل Odoo) */
+  scaleX?: number;
+  scaleY?: number;
+  /** صندوق خلف النص */
+  boxEnabled?: boolean;
+  boxWidth?: number;
+  boxHeight?: number;
+  boxColor?: string;
+  /** لون خلفية صندوق الإدخال (قديم — يُحوَّل إلى boxColor) */
   coverFill?: string;
   /** حجم حرف N/C/P الأصلي (نسبة) */
   markerWRatio?: number;

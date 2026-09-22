@@ -3,8 +3,7 @@
 import { defaultLayer, sanitizeFilename, TEMPLATE_NAMES } from './constants';
 
 import { buildPresetLayers } from './template-presets';
-
-
+import { normalizeDesignLayers } from './normalize-layer';
 
 describe('netcard constants', () => {
 
@@ -58,5 +57,32 @@ describe('netcard constants', () => {
 
   });
 
+});
+
+describe('Odoo layout normalize', () => {
+  it('normalizes layers with box and scale from Odoo JSON shape', () => {
+    const raw: Partial<import('./types').DesignLayer>[] = [
+      {
+        type: 'name',
+        x: 100,
+        y: 200,
+        fontSize: 56,
+        color: '#cc00bb',
+        scaleX: 1.2,
+        scaleY: 0.9,
+        coverFill: '#f9f8f8',
+        boxWidth: 300,
+        boxHeight: 80,
+      },
+      { type: 'code', x: 1, y: 2, fontSize: 40, color: '#111111' },
+      { type: 'phone', x: 3, y: 4, fontSize: 41, color: '#222222' },
+    ];
+    const layers = normalizeDesignLayers(raw, 819, 1024);
+    expect(layers).toHaveLength(3);
+    expect(layers[0].boxEnabled).toBe(true);
+    expect(layers[0].boxColor).toBe('#f9f8f8');
+    expect(layers[0].scaleX).toBe(1.2);
+    expect(layers[0].scaleY).toBe(0.9);
+  });
 });
 

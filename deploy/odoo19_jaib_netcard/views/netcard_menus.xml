@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_netcard_template" model="ir.actions.act_window">
+        <field name="name">قوالب البطاقات</field>
+        <field name="res_model">netcard.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_jaib_netcard_root" name="بطاقات جيب" sequence="80"/>
+    <menuitem id="menu_netcard_templates" name="القوالب" parent="menu_jaib_netcard_root" action="action_netcard_template" sequence="10" groups="jaib_netcard.group_netcard_user"/>
+</odoo>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_netcard_template_tree" model="ir.ui.view">
+        <field name="name">netcard.template.tree</field>
+        <field name="model">netcard.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="is_builtin"/>
+                <field name="featured"/>
+                <field name="layout_layer_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_netcard_template_form" model="ir.ui.view">
+        <field name="name">netcard.template.form</field>
+        <field name="model">netcard.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_open_layout" type="object" string="تخطيط الليبلات" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="sequence"/>
+                        <field name="is_builtin"/>
+                        <field name="featured"/>
+                        <field name="active"/>
+                    </group>
+                    <field name="image" widget="image"/>
+                    <field name="layout_id" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_netcard_template_layout_form" model="ir.ui.view">
+        <field name="name">netcard.template.layout.form</field>
+        <field name="model">netcard.template.layout</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="template_id"/>
+                        <field name="custom_template_id"/>
+                        <field name="template_code"/>
+                        <field name="version"/>
+                        <field name="background_url"/>
+                        <field name="last_editor_id"/>
+                    </group>
+                    <notebook>
+                        <page string="JSON">
+                            <field name="layers_text" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
