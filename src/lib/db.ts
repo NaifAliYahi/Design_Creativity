@@ -1,4 +1,4 @@
-﻿import { openDB, type IDBPDatabase } from 'idb';
+import { openDB, type IDBPDatabase } from 'idb';
 import type { AppData } from '../types';
 import type { UserAccount } from '../types/auth';
 import type { TemplateStoreEntry, CustomTemplate } from './netcard/types';
@@ -219,7 +219,9 @@ export async function loadNetcardTemplateStore(): Promise<Record<string, Templat
 
   if (useServer) {
     try {
-      return (await api.getNetcardTemplates()) as Record<string, TemplateStoreEntry>;
+      const remote = (await api.getNetcardTemplates()) as Record<string, TemplateStoreEntry>;
+      const bundled = await loadBundledLayouts();
+      return { ...bundled, ...remote };
     } catch {
       return loadBundledLayouts();
     }
@@ -239,7 +241,10 @@ export async function loadNetcardTemplateStore(): Promise<Record<string, Templat
 export async function saveNetcardTemplateEntry(id: string, entry: TemplateStoreEntry): Promise<void> {
   const payload = { ...entry, updatedAt: Date.now() };
   await initStorageMode();
-  if (useServer) await api.putNetcardTemplate(id, payload);
+  if (useServer) {
+    await api.putNetcardTemplate(id, payload);
+    return;
+  }
   const db = await getLocalDB();
   await db.put('netcardTemplates', payload, id);
 }
@@ -294,7 +299,10 @@ export async function loadNetcardCustomTemplates(): Promise<CustomTemplate[]> {
 
 export async function saveNetcardCustomTemplate(entry: CustomTemplate): Promise<void> {
   await initStorageMode();
-  if (useServer) await api.putNetcardCustom(entry);
+  if (useServer) {
+    await api.putNetcardCustom(entry);
+    return;
+  }
   const db = await getLocalDB();
   await db.put('netcardCustomTemplates', entry, entry.id);
 }
@@ -310,6 +318,6 @@ export async function deleteNetcardCustomTemplate(id: string): Promise<void> {
 export async function getStorageInfo(): Promise<{ mode: 'server' | 'local'; label: string }> {
   const server = await initStorageMode();
   return server
-    ? { mode: 'server', label: 'ملف المشروع — server/data/store.json (مشترك بين المتصفحات)' }
-    : { mode: 'local', label: 'IndexedDB — محلي على هذا المتصفح فقط' };
+    ? { mode: 'server', label: 'SQLite — server/data/app.db (مشترك بين الموظفين والعملاء)' }
+    : { mode: 'local', label: 'IndexedDB — محلي على هذا المتصفح فقط (لا يُستخدم للإنتاج)' };
 }

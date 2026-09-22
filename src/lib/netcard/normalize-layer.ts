@@ -1,4 +1,4 @@
-﻿import { DEFAULT_FONT, DEFAULT_FONT_SIZE, FIELD_COLORS, layerUid } from './constants';
+import { DEFAULT_FONT, DEFAULT_FONT_SIZE, FIELD_COLORS, layerUid } from './constants';
 import type { DesignLayer, LayerType } from './types';
 
 const TEXT_TYPES: LayerType[] = ['name', 'code', 'phone'];
@@ -39,6 +39,10 @@ export function normalizeDesignLayer(
   return {
     id: raw.id || `layer-${index}-${layerUid()}`,
     type,
+    codeIndex:
+      type === 'code' && raw.codeIndex !== undefined && raw.codeIndex !== null
+        ? num(raw.codeIndex, 0)
+        : undefined,
     x,
     y,
     fontSize: num(raw.fontSize, DEFAULT_FONT_SIZE),

@@ -1,4 +1,4 @@
-﻿import { MAX_CUSTOM_TEMPLATE_BYTES } from './constants';
+import { MAX_CUSTOM_TEMPLATE_BYTES } from './constants';
 import type { CustomTemplate } from './types';
 import {
   deleteNetcardCustomTemplate,
@@ -57,9 +57,13 @@ export async function addCustomTemplate(file: File): Promise<CustomTemplate> {
   return addCustomTemplateFromDataUrl(file.name.replace(/\.[^.]+$/, '') || 'قالب مخصص', base64);
 }
 
-export async function addCustomTemplateFromDataUrl(label: string, base64: string): Promise<CustomTemplate> {
+export async function addCustomTemplateFromDataUrl(
+  label: string,
+  base64: string,
+  meta?: { typeId?: string | null; walletId?: string | null; groupName?: string }
+): Promise<CustomTemplate> {
   const thumb = await makeUploadThumb(base64);
-  const id = `custom-${Date.now()}`;
+  const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
   const entry: CustomTemplate = {
     id,
@@ -67,6 +71,9 @@ export async function addCustomTemplateFromDataUrl(label: string, base64: string
     base64,
     thumb,
     createdAt: Date.now(),
+    typeId: meta?.typeId ?? null,
+    walletId: meta?.walletId ?? null,
+    groupName: meta?.groupName,
   };
 
   await saveNetcardCustomTemplate(entry);

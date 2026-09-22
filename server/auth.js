@@ -1,4 +1,4 @@
-﻿import crypto from 'crypto';
+import crypto from 'crypto';
 
 const SALT = 'cs-salt-v1:';
 const TOKEN_TTL_MS = 12 * 60 * 60 * 1000;
@@ -42,6 +42,9 @@ export function authMiddleware(req, res, next) {
   if (PUBLIC_PATHS.has(req.path)) return next();
   if (req.method === 'GET' && req.path.startsWith('/api/netcard/templates')) return next();
   if (req.method === 'GET' && req.path.startsWith('/api/netcard/custom')) return next();
+  if (req.method === 'GET' && (req.path === '/api/netcard/catalog' || req.originalUrl.startsWith('/api/netcard/catalog'))) {
+    return next();
+  }
 
   const raw = req.headers.authorization || '';
   const token = raw.startsWith('Bearer ') ? raw.slice(7) : '';

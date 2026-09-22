@@ -1,4 +1,4 @@
-﻿import { drawTextLayer } from './draw-text-layer';
+import { drawTextLayer, layerDisplayText } from './draw-text-layer';
 import { sanitizeFilename, TEMPLATE_LABELS } from './constants';
 import { resolveTemplateBackground } from './templates';
 import { resolveTemplateLayers } from './template-layout';
@@ -14,8 +14,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 }
 
 function layerText(layer: DesignLayer, fields: NetworkFields): string {
-  if (layer.type === 'image') return '';
-  return String(fields[layer.type as keyof NetworkFields] || '');
+  return layerDisplayText(layer, fields, true);
 }
 
 function drawExportLayer(

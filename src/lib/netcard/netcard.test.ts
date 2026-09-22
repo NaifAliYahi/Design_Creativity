@@ -1,9 +1,10 @@
-﻿import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import { defaultLayer, sanitizeFilename, TEMPLATE_NAMES } from './constants';
 
 import { buildPresetLayers } from './template-presets';
 import { normalizeDesignLayers } from './normalize-layer';
+import { syncExtraCodeLayers } from './extra-code-layers';
 
 describe('netcard constants', () => {
 
@@ -57,6 +58,14 @@ describe('netcard constants', () => {
 
   });
 
+});
+
+describe('Odoo layout detect & extra codes', () => {
+  it('adds code layers for extraCodes', () => {
+    const base = buildPresetLayers('template1', 800, 1000);
+    const synced = syncExtraCodeLayers(base, 800, 1000, ['111', '222']);
+    expect(synced.filter((l) => l.type === 'code').length).toBe(3);
+  });
 });
 
 describe('Odoo layout normalize', () => {

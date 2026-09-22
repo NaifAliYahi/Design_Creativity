@@ -1,4 +1,4 @@
-﻿# ربط Netlify بـ GitHub — خطوة بخطوة
+# ربط Netlify بـ GitHub — خطوة بخطوة
 
 > المستودع: https://github.com/NaifAliYahi/mahfazat-jeeb-design
 

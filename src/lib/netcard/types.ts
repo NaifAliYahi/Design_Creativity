@@ -1,8 +1,10 @@
-﻿export type LayerType = 'name' | 'code' | 'phone' | 'image';
+export type LayerType = 'name' | 'code' | 'phone' | 'image';
 
 export interface DesignLayer {
   id: string;
   type: LayerType;
+  /** 0 أو غير معرّف = الكود الرئيسي؛ 1+ = extraCodes[index-1] */
+  codeIndex?: number;
   x: number;
   y: number;
   fontSize: number;
@@ -48,6 +50,8 @@ export interface NetworkFields {
   name: string;
   code: string;
   phone: string;
+  /** نصوص/أكواد إضافية على طبقات code (مثل Odoo) */
+  extraCodes?: string[];
 }
 
 export interface TemplateStoreEntry {
@@ -62,6 +66,9 @@ export interface CustomTemplate {
   base64: string;
   thumb: string;
   createdAt: number;
+  typeId?: string | null;
+  walletId?: string | null;
+  groupName?: string;
 }
 
 export interface TemplatePreview {

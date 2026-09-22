@@ -1,7 +1,8 @@
-﻿import type { UserAccount, AuthSession } from '../types/auth';
+import type { UserAccount, AuthSession } from '../types/auth';
 import { uid } from '../constants';
 import { loadUsers, saveUsers } from './db';
 import { api, isServerAvailable, setApiToken } from './api';
+import { syncCatalogAfterLogin } from './netcard/catalog';
 
 const SESSION_KEY = 'cs-auth-session';
 
@@ -47,9 +48,11 @@ export async function login(username: string, password: string): Promise<AuthSes
       const session = res.session as AuthSession;
       setApiToken(res.token);
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      await syncCatalogAfterLogin().catch(() => {});
       return session;
     } catch {
-      /* سيرفر قديم أو بيانات غير متطابقة — جرّب التخزين المحلي */
+      /* السيرفر شغّال — لا دخول محلي (لا token = لا حفظ مشترك) */
+      return null;
     }
   }
 

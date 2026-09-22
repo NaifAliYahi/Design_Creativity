@@ -1,4 +1,4 @@
-﻿const API = '/api';
+const API = '/api';
 const TOKEN_KEY = 'cs-api-token';
 
 let serverOk: boolean | null = null;
@@ -92,4 +92,22 @@ export const api = {
     request<{ ok: boolean }>('/netcard/custom', { method: 'PUT', body: JSON.stringify(entry) }),
   deleteNetcardCustom: (id: string) =>
     request<{ ok: boolean }>(`/netcard/custom/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+
+  /** قراءة الكatalog للجميع — بدون Authorization (للعملاء ومتصفح ثانٍ) */
+  getNetcardCatalogPublic: async () => {
+    const r = await fetch(`${API}/netcard/catalog`, { cache: 'no-store' });
+    if (!r.ok) throw new Error(`API ${r.status}: /netcard/catalog`);
+    return r.json() as Promise<{
+      types: unknown[];
+      wallets: unknown[];
+      templateMeta: Record<string, unknown>;
+    }>;
+  },
+
+  getNetcardCatalog: () =>
+    request<{ types: unknown[]; wallets: unknown[]; templateMeta: Record<string, unknown> }>(
+      '/netcard/catalog'
+    ),
+  putNetcardCatalog: (body: unknown) =>
+    request<{ ok: boolean }>('/netcard/catalog', { method: 'PUT', body: JSON.stringify(body) }),
 };

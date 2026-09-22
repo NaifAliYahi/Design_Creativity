@@ -1,4 +1,4 @@
-﻿import { PLACEHOLDERS } from './constants';
+import { PLACEHOLDERS } from './constants';
 import type { DesignLayer, NetworkFields } from './types';
 
 export function layerDisplayText(
@@ -7,7 +7,12 @@ export function layerDisplayText(
   preview: boolean
 ): string {
   if (layer.type === 'image') return '';
-  const val = fields[layer.type as keyof NetworkFields];
+  if (layer.type === 'code' && layer.codeIndex && layer.codeIndex > 0) {
+    const extra = fields.extraCodes?.[layer.codeIndex - 1] ?? '';
+    if (preview) return String(extra);
+    return extra ? String(extra) : '[كود/نص إضافي]';
+  }
+  const val = layer.type === 'name' || layer.type === 'code' || layer.type === 'phone' ? fields[layer.type] : '';
   if (preview) return String(val || '');
   return val ? String(val) : PLACEHOLDERS[layer.type as keyof typeof PLACEHOLDERS];
 }

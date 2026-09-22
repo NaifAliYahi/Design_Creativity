@@ -1,8 +1,9 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { CustomerPicker } from '../components/CustomerPicker';
 import { TemplateScrollPreview } from '../components/TemplateScrollPreview';
-import { Button, PageHeader } from '../components/ui';
+import { Button } from '../components/ui';
 import { useNetCardDesigner } from '../hooks/useNetCardDesigner';
 import { loadAllTemplateThumbs, loadTemplateImage, preloadTemplates } from '../lib/netcard/templates';
 import {
@@ -31,10 +32,15 @@ import {
 import type { Customer } from '../types';
 import { downloadNetcardExcelTemplate, parseNetcardExcel } from '../lib/netcard/excel';
 import type { CustomTemplate, LayerType, NetworkFields, TemplatePreview, TemplateThumb } from '../lib/netcard/types';
+import { layerListLabel } from '../lib/netcard/extra-code-layers';
+import type { NetcardThemeId } from '../lib/netcard/catalog-types';
+import { NetcardThemeBar } from '../components/netcard/NetcardThemeBar';
+import { NetcardSettingsTab } from '../components/netcard/NetcardSettingsTab';
+import { useNetcardCatalog } from '../hooks/useNetcardCatalog';
 import { buildCardShareMessage, isValidWhatsAppPhone, shareCardViaWhatsApp } from '../lib/share';
 import './design-template.css';
 
-type Tab = 'templates' | 'design';
+type Tab = 'templates' | 'design' | 'settings';
 type LayoutMode = 'single' | 'selected' | 'all';
 
 const DEMO_FIELDS: NetworkFields = { name: 'شبكة النور', code: '22540', phone: '0551234567' };
@@ -46,6 +52,7 @@ type DesignTemplatePageProps = {
 
 export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProps) {
   const { data } = useApp();
+  const { session } = useAuth();
   const [tab, setTab] = useState<Tab>('templates');
   const [thumbs, setThumbs] = useState<TemplateThumb[]>([]);
   const [thumbsLoading, setThumbsLoading] = useState(true);
@@ -59,7 +66,17 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
   const [sharing, setSharing] = useState(false);
   const [batchExporting, setBatchExporting] = useState(false);
   const [batchProgress, setBatchProgress] = useState('');
+  const [extraCodes, setExtraCodes] = useState<string[]>([]);
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('single');
+  const [theme, setTheme] = useState<NetcardThemeId>(() => {
+    try {
+      const s = localStorage.getItem('nc-theme');
+      if (s === 'brand' || s === 'odoo' || s === 'teal' || s === 'navy') return s;
+    } catch {
+      /* ignore */
+    }
+    return 'brand';
+  });
   const [layoutBusy, setLayoutBusy] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [exportPreviewSrc, setExportPreviewSrc] = useState<string | null>(null);
@@ -71,8 +88,11 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
 
   const hasFields = Boolean(fields.name.trim() && fields.code.trim() && fields.phone.trim());
   const designFields = useMemo(
-    () => (hasFields ? fields : guestMode ? fields : DEMO_FIELDS),
-    [fields, hasFields, guestMode]
+    () => ({
+      ...(hasFields ? fields : guestMode ? fields : DEMO_FIELDS),
+      extraCodes,
+    }),
+    [fields, hasFields, guestMode, extraCodes]
   );
 
   const getSyncTargetIds = (): string[] => {
@@ -97,6 +117,19 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
   const clearTemplateSelection = () => setSelectedIds(new Set());
 
   const designer = useNetCardDesigner(designFields, { guestMode });
+  const catalog = useNetcardCatalog(customTemplates);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('nc-theme', theme);
+    } catch {
+      /* ignore */
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    if (session) catalog.reload();
+  }, [session?.userId]);
 
   reloadTemplateRef.current = designer.reloadCurrentTemplate;
 
@@ -400,43 +433,26 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
   };
 
   return (
-    <div className={`netcard-app mx-auto max-w-[1400px] ${guestMode ? 'netcard-guest' : ''}`}>
-      {!guestMode && (
-        <PageHeader
-          title="مصمم بطاقات الشبكات"
-          subtitle="صمّم القوالب → حدّد أو طبّق على الكل → نزّل للعميل"
-        />
-      )}
-
-      {!guestMode && (
-        <div className="mb-4 rounded-xl border border-teal-200 bg-teal-50/90 px-4 py-3 text-sm text-teal-950">
-          <strong>للموظف:</strong> اختر قالباً → اسحب ✥ الاسم/الكود/الهاتف →{' '}
-          <strong>«كل القوالب»</strong> أو <strong>«المحددة»</strong> لتطبيق التصميم دفعة واحدة →{' '}
-          نزّل قالباً واحداً أو كل المحدد. يمكنك <strong>رفع قالب جديد</strong> (PNG/JPG).
-        </div>
-      )}
+    <div
+      className={`netcard-app nc-studio mx-auto max-w-[1400px] ${guestMode ? 'netcard-guest' : ''}`}
+      data-theme={theme}
+      dir="rtl"
+    >
+      <NetcardThemeBar
+        theme={theme}
+        onChange={setTheme}
+        templateCount={catalog.allTemplates.length}
+        selectedCount={selectedList.length}
+      />
 
       {guestMode && (
-        <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50/80 px-4 py-3 text-sm text-brand-900">
-          <strong>①</strong> أدخل بيانات الشبكة → <strong>②</strong> حدّد القوالب (☑) أو <strong>استورد تصميمك</strong> →{' '}
-          <strong>③</strong> عدّل مواقع الليبلات → <strong>④</strong> نزّل المحددة
+        <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50/80 px-4 py-3 text-sm text-brand-900 mx-1">
+          <strong>①</strong> أدخل البيانات → <strong>②</strong> فلتر/حدّد القوالب → <strong>③</strong> صمّم →{' '}
+          <strong>④</strong> نزّل
         </div>
       )}
 
-      <div className="netcard-shell">
-        {!guestMode && (
-          <header className="netcard-header">
-            <h2>🎨 مصمم بطاقات الشبكات — محفظة جيب</h2>
-            <p className="netcard-tagline">صمّم بطاقة احترافية لعملائك في دقائق</p>
-          </header>
-        )}
-        {guestMode && (
-          <header className="netcard-header netcard-header-guest">
-            <h2>🎨 صمّم بطاقة شبكتك</h2>
-            <p className="netcard-tagline">اختر قالب محفظة جيب وخصّص بياناتك</p>
-          </header>
-        )}
-
+      <div className="netcard-shell nc-studio-shell">
         <div className="netcard-tabs">
           <button
             type="button"
@@ -452,6 +468,15 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
           >
             منطقة التصميم
           </button>
+          {!guestMode && (
+            <button
+              type="button"
+              className={`netcard-tab ${tab === 'settings' ? 'active' : ''}`}
+              onClick={() => setTab('settings')}
+            >
+              إعدادات القوالب
+            </button>
+          )}
         </div>
 
         {tab === 'templates' && (
@@ -480,6 +505,38 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                   <span>رقم الهاتف</span>
                   <input value={fields.phone} onChange={(e) => setField('phone', e.target.value)} placeholder="05XXXXXXXX" className="font-mono" />
                 </label>
+              </div>
+              <div className="netcard-extra-codes">
+                <div className="netcard-extra-codes-head">
+                  <span>كود آخر أو نص يظهر على التصميم</span>
+                  <button
+                    type="button"
+                    className="netcard-link-btn"
+                    disabled={extraCodes.length >= 19}
+                    onClick={() => setExtraCodes((prev) => [...prev, ''])}
+                  >
+                    + إضافة نص أو كود
+                  </button>
+                </div>
+                {extraCodes.map((val, idx) => (
+                  <label key={idx} className="netcard-extra-code-row">
+                    <span>إضافي {idx + 1}</span>
+                    <input
+                      value={val}
+                      placeholder="نص أو كود إضافي"
+                      onChange={(e) =>
+                        setExtraCodes((prev) => prev.map((c, i) => (i === idx ? e.target.value : c)))
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="netcard-link-btn danger"
+                      onClick={() => setExtraCodes((prev) => prev.filter((_, i) => i !== idx))}
+                    >
+                      حذف
+                    </button>
+                  </label>
+                ))}
               </div>
               <div className="netcard-btn-row" style={{ marginTop: 12 }}>
                 <button
@@ -553,6 +610,50 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
 
             <div className="netcard-section">
               <p className="netcard-section-title">② اختر وحدّد القوالب (☑)</p>
+              <div className="netcard-filter-row netcard-filter-row-4">
+                <label>
+                  <span>نوع القالب</span>
+                  <select value={catalog.typeFilter} onChange={(e) => catalog.setTypeFilter(e.target.value)}>
+                    <option value="">كل الأنواع</option>
+                    {catalog.types.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>المحفظة</span>
+                  <select value={catalog.walletFilter} onChange={(e) => catalog.setWalletFilter(e.target.value)}>
+                    <option value="">كل المحافظ</option>
+                    {catalog.wallets.map((w) => (
+                      <option key={w.id} value={w.id}>
+                        {w.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>المجموعة</span>
+                  <select value={catalog.groupFilter} onChange={(e) => catalog.setGroupFilter(e.target.value)}>
+                    <option value="">كل المجموعات</option>
+                    {catalog.groups.map((g) => (
+                      <option key={g.id} value={g.id}>
+                        {g.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>بحث</span>
+                  <input
+                    type="search"
+                    value={catalog.templateQuery}
+                    onChange={(e) => catalog.setTemplateQuery(e.target.value)}
+                    placeholder="اسم القالب أو الملف…"
+                  />
+                </label>
+              </div>
               <div className="netcard-btn-row" style={{ marginBottom: 12 }}>
                 <button type="button" className="netcard-btn" onClick={selectAllTemplates}>
                   ☑ تحديد الكل
@@ -626,14 +727,15 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                 <p className="netcard-hint">جاري تحميل القوالب…</p>
               ) : (
                 <div className="netcard-gallery">
-                  {BUILTIN_TEMPLATES.map((tpl) => {
-                    const name = tpl.id;
+                  {catalog.filteredBuiltin.map((item) => {
+                    const tpl = BUILTIN_TEMPLATES.find((t) => t.id === item.id);
+                    const name = item.id;
                     const thumb = thumbMap.get(name);
-                    const label = TEMPLATE_LABELS[name] ?? name;
+                    const label = item.name;
                     return (
                       <div
                         key={name}
-                        className={`netcard-tpl ${tpl.featured ? 'featured' : ''} ${designer.templateId === name ? 'selected' : ''} ${selectedIds.has(name) ? 'checked' : ''}`}
+                        className={`netcard-tpl ${item.featured || tpl?.featured ? 'featured' : ''} ${designer.templateId === name ? 'selected' : ''} ${selectedIds.has(name) ? 'checked' : ''}`}
                       >
                         <label
                           className="netcard-tpl-check"
@@ -653,7 +755,7 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                             <div className="netcard-tpl-ph">{label}</div>
                           )}
                           <span>
-                            {tpl.featured ? '⭐ ' : ''}
+                            {item.featured || tpl?.featured ? '⭐ ' : ''}
                             {label}
                             {(designer.savedSummary[name] ?? 0) > 0 && (
                               <span className="netcard-saved-dot" title="تصميم محفوظ">
@@ -674,7 +776,10 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                       </div>
                     );
                   })}
-                  {customTemplates.map((tpl) => (
+                  {catalog.filteredCustom.map((item) => {
+                    const tpl = customTemplates.find((c) => c.id === item.id);
+                    if (!tpl) return null;
+                    return (
                     <div
                       key={tpl.id}
                       className={`netcard-tpl custom ${designer.templateId === tpl.id ? 'selected' : ''} ${selectedIds.has(tpl.id) ? 'checked' : ''}`}
@@ -719,7 +824,8 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                         ×
                       </button>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -958,6 +1064,23 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                 <button type="button" className="netcard-btn danger" onClick={handleResetCurrent} disabled={layoutBusy}>
                   ↺ إعادة القالب
                 </button>
+                <button
+                  type="button"
+                  className="netcard-btn"
+                  disabled={!designer.bgLoaded || designer.loading}
+                  onClick={async () => {
+                    const ok = await designer.detectSlots();
+                    alert(
+                      ok
+                        ? guestMode
+                          ? 'تم التعرف على المناطق الثلاث. عدّلها ثم نزّل — يُحفظ في متصفحك فقط.'
+                          : 'تم التعرف على مناطق الاسم والكود والهاتف. راجع المواقع ثم احفظ إن لزم.'
+                        : 'تعذّر التعرف — جرّب سحب الليبلات يدوياً أو قالباً أوضح.'
+                    );
+                  }}
+                >
+                  ◎ تعرف على المناطق الثلاث
+                </button>
               </div>
 
               <div className="netcard-btn-row">
@@ -1140,7 +1263,9 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
                               designer.toggleVisible(layer.id);
                             }}
                           />
-                          <span style={{ flex: 1 }}>{TYPE_LABELS[layer.type]}</span>
+                          <span style={{ flex: 1 }}>
+                            {layerListLabel(layer, extraCodes)}
+                          </span>
                         </div>
                       ))}
                       {designer.layers.length === 0 && (
@@ -1398,6 +1523,20 @@ export function DesignTemplatePage({ guestMode = false }: DesignTemplatePageProp
               </Button>
             </div>
           </div>
+        )}
+
+        {tab === 'settings' && !guestMode && catalog.state && (
+          <NetcardSettingsTab
+            catalogState={catalog.state}
+            types={catalog.types}
+            wallets={catalog.wallets}
+            allTemplates={catalog.allTemplates}
+            onCatalogChange={() => catalog.reload()}
+            addKind={catalog.addKind}
+            removeKind={catalog.removeKind}
+            updateTemplateMeta={catalog.updateTemplateMeta}
+            refreshCustomTemplates={refreshCustomTemplates}
+          />
         )}
       </div>
     </div>

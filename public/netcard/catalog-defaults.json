@@ -1,0 +1,35 @@
+{
+  "types": [
+    { "id": "type-general", "name": "قوالب عامة", "code": "general" },
+    { "id": "type-friday", "name": "جمعة مباركة", "code": "friday" },
+    { "id": "type-holiday", "name": "قوالب أعياد", "code": "holiday" },
+    { "id": "type-promo", "name": "عروض وتخفيضات", "code": "promo" }
+  ],
+  "wallets": [
+    { "id": "wallet-jaib", "name": "محفظة جيب", "code": "jaib" },
+    { "id": "wallet-shleen", "name": "محفظة شلين", "code": "shleen" },
+    { "id": "wallet-jawali", "name": "محفظة جوالي", "code": "jawali" },
+    { "id": "wallet-floosak", "name": "محفظة فلوسك", "code": "floosak" },
+    { "id": "wallet-other", "name": "محفظة أخرى", "code": "other" },
+    { "id": "wallet-general", "name": "عام", "code": "general" }
+  ],
+  "templates": {
+    "template1": { "name": "قالب جيب 1", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب", "featured": true },
+    "template2": { "name": "قالب جيب 2", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب", "featured": true },
+    "template3": { "name": "قالب جيب 3", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب", "featured": true },
+    "template4": { "name": "قالب جيب 4", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب", "featured": true },
+    "template5": { "name": "قالب جيب 5", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template6": { "name": "قالب جيب 6", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template7": { "name": "قالب جيب 7", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template8": { "name": "قالب جيب 8", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template9": { "name": "قالب جيب 9", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template10": { "name": "قالب جيب 10", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template11": { "name": "قالب جيب 11", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template12": { "name": "قالب جيب 12", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template13": { "name": "قالب جيب 13", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template14": { "name": "قالب جيب 14", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template15": { "name": "قالب جيب 15", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template16": { "name": "قالب جيب 16", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" },
+    "template17": { "name": "قالب جيب 17", "typeId": "type-general", "walletId": "wallet-jaib", "groupName": "قوالب جيب" }
+  }
+}

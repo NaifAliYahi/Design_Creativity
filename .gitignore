@@ -1,4 +1,4 @@
-﻿# ——— لا ترفع هذه الملفات على GitHub ———
+# ——— لا ترفع هذه الملفات على GitHub ———
 
 # المكتبات (يُعاد تثبيتها تلقائياً على Render)
 node_modules/
@@ -11,6 +11,9 @@ release/
 # بيانات محلية للموظفين — سرية
 **/server/data/store.json
 **/server/data/*.json
+**/server/data/*.db
+**/server/data/*.db-*
+**/server/data/*.bak
 !server/data/.gitkeep
 
 # ملفات مؤقتة

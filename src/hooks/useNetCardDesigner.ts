@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   defaultLayer,
   sanitizeFilename,
@@ -6,6 +6,8 @@ import {
 import { drawTextLayer, layerDisplayText, measureTextLayer } from '../lib/netcard/draw-text-layer';
 import { loadTemplateImage } from '../lib/netcard/templates';
 import { loadTemplateStore, saveTemplateEntry, getSavedTemplateSummary } from '../lib/netcard/storage';
+import { syncExtraCodeLayers } from '../lib/netcard/extra-code-layers';
+import { detectLayersFromHtmlImage } from '../lib/netcard/layout-detect';
 import { resolveTemplateLayers } from '../lib/netcard/template-layout';
 import type { DesignLayer, LayerType, NetworkFields } from '../lib/netcard/types';
 
@@ -230,6 +232,23 @@ export function useNetCardDesigner(
   useEffect(() => {
     redraw();
   }, [redraw, layers, fields, previewMode, selectedId, canvasSize]);
+
+  useEffect(() => {
+    if (!bgLoaded || !canvasRef.current?.width) return;
+    const extra = fields.extraCodes ?? [];
+    const synced = syncExtraCodeLayers(
+      layersRef.current,
+      canvasRef.current.width,
+      canvasRef.current.height,
+      extra
+    );
+    if (JSON.stringify(synced) !== JSON.stringify(layersRef.current)) {
+      pushHistory();
+      layersRef.current = synced;
+      setLayers(synced);
+      persistLayers(synced);
+    }
+  }, [fields.extraCodes, bgLoaded, persistLayers, pushHistory]);
 
   useEffect(() => {
     if (!bgLoaded) return;
@@ -639,7 +658,11 @@ export function useNetCardDesigner(
 
   const selectLayerByType = useCallback(
     (type: LayerType) => {
-      const layer = layersRef.current.find((l) => l.type === type);
+      const layer = layersRef.current.find(
+        (l) =>
+          l.type === type &&
+          (type !== 'code' || !l.codeIndex || l.codeIndex === 0)
+      );
       if (layer) {
         setSelectedId(layer.id);
         redraw();
@@ -647,6 +670,25 @@ export function useNetCardDesigner(
     },
     [redraw]
   );
+
+  const detectSlots = useCallback(async (): Promise<boolean> => {
+    const bg = bgImageRef.current;
+    const canvas = canvasRef.current;
+    if (!bg?.complete || !canvas?.width) return false;
+    pushHistory();
+    let detected = detectLayersFromHtmlImage(bg);
+    if (!detected.length) return false;
+    detected = syncExtraCodeLayers(
+      detected,
+      canvas.width,
+      canvas.height,
+      fieldsRef.current.extraCodes ?? []
+    );
+    setLayersAndPersist(detected);
+    const codeLayer = detected.find((l) => l.type === 'code' && (!l.codeIndex || l.codeIndex === 0));
+    setSelectedId(codeLayer?.id ?? detected[0]?.id ?? null);
+    return true;
+  }, [pushHistory, setLayersAndPersist]);
 
   const reloadCurrentTemplate = useCallback(async () => {
     if (!templateId) return;
@@ -688,5 +730,6 @@ export function useNetCardDesigner(
     selectLayerByType,
     reloadCurrentTemplate,
     flushSave,
+    detectSlots,
   };
 }

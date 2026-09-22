@@ -1,5 +1,5 @@
-﻿import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { resetServerCheck } from '../lib/api';
 import { Button, Field, Input } from '../components/ui';
@@ -7,6 +7,9 @@ import { Button, Field, Input } from '../components/ui';
 export function LoginPage() {
   const { login, loading, session } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: string } | null)?.from ?? '/my-work';
+  const needServer = Boolean((location.state as { needServerLogin?: boolean } | null)?.needServerLogin);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,8 +20,8 @@ export function LoginPage() {
   }, []);
 
   useEffect(() => {
-    if (session) navigate('/my-work', { replace: true });
-  }, [session, navigate]);
+    if (session) navigate(from, { replace: true });
+  }, [session, navigate, from]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,9 +30,13 @@ export function LoginPage() {
     const ok = await login(username, password);
     setSubmitting(false);
     if (ok) {
-      navigate('/my-work', { replace: true });
+      navigate(from, { replace: true });
     } else {
-      setError('اسم المستخدم أو كلمة المرور غير صحيحة');
+      setError(
+        needServer
+          ? 'فشل الدخول على السيرفر. شغّل npm run dev وتأكد من 777465157 / 1234'
+          : 'اسم المستخدم أو كلمة المرور غير صحيحة'
+      );
     }
   };
 

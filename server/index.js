@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
@@ -11,51 +11,18 @@ import {
   hashPassword,
   syncDefaultUsers,
 } from './auth.js';
+import { DB_FILE, dbStats, deleteKey, getJson, openDatabase, setJson } from './sqlite-db.js';
+import { ensureNetcardCatalogSeeded } from './seed-netcard-catalog.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, 'data');
-const STORE_FILE = path.join(DATA_DIR, 'store.json');
 const DIST_DIR = path.join(__dirname, '..', 'dist');
 const HAS_DIST = fs.existsSync(path.join(DIST_DIR, 'index.html'));
 const IS_PROD =
   process.env.APP_MODE === 'production' || process.env.NODE_ENV === 'production';
 const PORT = Number(process.env.PORT) || (IS_PROD ? 5173 : 3001);
 
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-
-function readStore() {
-  try {
-    if (fs.existsSync(STORE_FILE)) {
-      return JSON.parse(fs.readFileSync(STORE_FILE, 'utf8'));
-    }
-  } catch {
-    /* corrupt file — start fresh */
-  }
-  return {};
-}
-
-function writeStore(store) {
-  fs.writeFileSync(STORE_FILE, JSON.stringify(store, null, 2), 'utf8');
-}
-
-function getJson(key) {
-  const store = readStore();
-  return store[key] ?? null;
-}
-
-function setJson(key, value) {
-  const store = readStore();
-  store[key] = value;
-  store._updatedAt = new Date().toISOString();
-  writeStore(store);
-}
-
-function deleteKey(key) {
-  const store = readStore();
-  delete store[key];
-  store._updatedAt = new Date().toISOString();
-  writeStore(store);
-}
+openDatabase();
+ensureNetcardCatalogSeeded();
 
 function ensureUsers() {
   let users = getJson('users');
@@ -82,7 +49,17 @@ app.use(express.json({ limit: '80mb' }));
 app.use(authMiddleware);
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, store: STORE_FILE, time: new Date().toISOString(), auth: true });
+  const stats = dbStats();
+  res.json({
+    ok: true,
+    database: 'sqlite',
+    dbPath: DB_FILE,
+    dbKeys: stats.keys,
+    dbSizeBytes: stats.fileSize,
+    time: new Date().toISOString(),
+    auth: true,
+    sharedWithClients: true,
+  });
 });
 
 app.post('/api/auth/login', (req, res) => {
@@ -182,6 +159,32 @@ app.delete('/api/netcard/custom/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/netcard/catalog', (_req, res) => {
+  res.json(
+    getJson('netcardCatalog') ?? {
+      types: [],
+      wallets: [],
+      templateMeta: {},
+    }
+  );
+});
+
+app.put('/api/netcard/catalog', (req, res) => {
+  const body = req.body ?? {};
+  const prev = getJson('netcardCatalog') ?? { types: [], wallets: [], templateMeta: {} };
+  const merged = {
+    types: Array.isArray(body.types) ? body.types : prev.types,
+    wallets: Array.isArray(body.wallets) ? body.wallets : prev.wallets,
+    templateMeta:
+      body.templateMeta && typeof body.templateMeta === 'object'
+        ? { ...prev.templateMeta, ...body.templateMeta }
+        : prev.templateMeta,
+    updatedAt: Date.now(),
+  };
+  setJson('netcardCatalog', merged);
+  res.json({ ok: true, catalog: merged });
+});
+
 if (IS_PROD && HAS_DIST) {
   app.use(express.static(DIST_DIR));
   app.get(/^(?!\/api).*/, (_req, res) => {
@@ -192,7 +195,7 @@ if (IS_PROD && HAS_DIST) {
 app.listen(PORT, () => {
   ensureUsers();
   const url = `http://localhost:${PORT}`;
-  console.log(`\n  ✅ قاعدة البيانات: ${STORE_FILE}`);
+  console.log(`\n  ✅ قاعدة البيانات SQLite: ${DB_FILE}`);
   console.log(`  🔐 تسجيل الدخول مطلوب للبيانات الحساسة`);
   console.log(`  🌐 ${IS_PROD && HAS_DIST ? 'النظام جاهز' : 'API'}: ${url}`);
   if (IS_PROD && HAS_DIST) console.log(`  📌 افتح المتصفح: ${url}/login`);
