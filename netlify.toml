@@ -1,4 +1,4 @@
-# Netlify deploy - customer design page at /design
+﻿# Netlify deploy - customer design page at /design
 # https://app.netlify.com -> Import from Git -> mahfazat-jeeb-design
 
 [build]
@@ -10,3 +10,4 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true

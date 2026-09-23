@@ -23,9 +23,9 @@ const src = process.env.ODOO_NETCARD_LAYOUTS || defaultSrc;
 const dst = path.join(root, '..', 'public', 'netcard', 'layouts');
 
 if (!fs.existsSync(src)) {
-  console.error('❌ مجلد Odoo غير موجود:', src);
-  console.error('   عيّن ODOO_NETCARD_LAYOUTS=...');
-  process.exit(1);
+  console.warn('⚠ تخطي نسخ Odoo (المجلد غير موجود على هذا الجهاز):', src);
+  console.warn('   نستخدم layouts الموجودة في المستودع (Netlify / CI).');
+  process.exit(0);
 }
 
 fs.mkdirSync(dst, { recursive: true });
